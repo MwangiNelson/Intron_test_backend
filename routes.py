@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import bcrypt
 
 # Secret key for JWT
-SECRET_KEY = "your_secret_key"  # Replace with a secure secret key
+SECRET_KEY = "sample_secret_key"  # Replace with a secure secret key
 
 
 def token_required(f):
@@ -67,18 +67,18 @@ def register_user():
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
-    if not data or 'email' not in data or 'password' not in data:
+    if not data or "email" not in data or "password" not in data:
         return jsonify({"message": "Missing email or password"}), 400
 
-    user = User.query.filter_by(email=data['email']).first()
+    user = User.query.filter_by(email=data["email"]).first()
     if not user:
         return jsonify({"message": "User not found"}), 401
 
     # Convert input password to bytes
-    input_password = data['password'].encode('utf-8')
-    
+    input_password = data["password"].encode("utf-8")
+
     # Convert stored hashed password to bytes
-    stored_password = user.password.encode('utf-8')
+    stored_password = user.password.encode("utf-8")
 
     if bcrypt.checkpw(input_password, stored_password):
         token = jwt.encode(
